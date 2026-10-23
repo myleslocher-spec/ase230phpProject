@@ -53,8 +53,8 @@
 - [10/10%] Code pushed to a **GitHub repository** with clear execution instructions.
   - **5%:** Required code is pushed to GitHub and a valid repository link is provided.
   - **5%:** Root `README.md` clearly explains prerequisites, database setup/schema import, server start commands (`http://localhost:8000`), and how to run tests. The grader can easily follow the instructions to run and test the project.
-  - Write your GitHub repository link: https://github.com/myleslocher-spec/phpProject/tree/main
-  - Write your GitHub repository README.md link: https://github.com/myleslocher-spec/phpProject/blob/main/README.md
+  - Write your GitHub repository link: https://github.com/myleslocher-spec/ase230phpProject
+  - Write your GitHub repository README.md link: https://github.com/myleslocher-spec/ase230phpProject/blob/main/phpProject/README.md
 
 ---
 
