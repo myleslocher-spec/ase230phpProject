@@ -14,7 +14,7 @@ ASE 230
 
 ## What this API does
 
-This is a REST API for managine events and their respective venues using PHP and MySQL.
+This is a REST API for managing events and their respective venues using PHP and MySQL.
 
 10 endpoints total: 5 for `/events`, 5 for `/venues`. 2 of them
 (the DELETE endpoints) require a Bearer token.
@@ -106,7 +106,7 @@ Request:
 ```bash
 curl -X PUT http://localhost:8000/events/1 \
   -H "Content-Type: application/json" \
-  -d '{"name":"Career Fair","description":"Spring Career Fair","event_date":"2027-4-12 12:00:00","venue_id":1}'
+  -d '{"name":"Career Fair","description":"Spring Career Fair","event_date":"2027-04-12 12:00:00","venue_id":1}'
 ```
 
 Response (timestamps omitted for example):
@@ -134,6 +134,12 @@ curl -X DELETE http://localhost:8000/events/2 \
 Without a valid token, the server returns 401.
 
 ---
+
+## DELETE /events/{id} Response
+
+```json
+{"message":"Event deleted successfully"}
+```
 
 ## GET /venues, GET /venues/{id}
 
@@ -165,7 +171,7 @@ curl -X POST http://localhost:8000/venues \
   -H "Content-Type: application/json" \
   -d '{"name":"Myles Music Hall","address":"4756 Robinson Rd", "capacity":300}'
 
-curl -X PUT http://localhost:8000/venues/1 \
+curl -X PUT http://localhost:8000/venues/2 \
   -H "Content-Type: application/json" \
   -d '{"name":"NKU Auditorium","address":"200 Nunn Dr","capacity":1000}'
 ```
@@ -174,7 +180,7 @@ curl -X PUT http://localhost:8000/venues/1 \
 
 ## POST /venues Response
 
-```bash
+```json
 {
   "id": 2,
   "message": "Venue created"
@@ -183,9 +189,9 @@ curl -X PUT http://localhost:8000/venues/1 \
 
 ---
 
-## PUT /venues{id} Response
+## PUT /venues/{id} Response
 
-```bash
+```json
 {
   "id": 2,
   "name": "NKU Auditorium",
@@ -201,7 +207,7 @@ curl -X PUT http://localhost:8000/venues/1 \
 Same Bearer token requirement as `DELETE /events/{id}`.
 
 ```bash
-curl -X DELETE http://localhost:8000/venues/1 \
+curl -X DELETE http://localhost:8000/venues/2 \
   -H "Authorization: Bearer admin-demo-token"
 ```
 
@@ -209,11 +215,13 @@ curl -X DELETE http://localhost:8000/venues/1 \
 
 ## Delete /venues/{id} Response
 
-```bash
+```json
 {
   "message": "Venue deleted successfully"
 }
 ```
+
+---
 
 ## How authentication works
 

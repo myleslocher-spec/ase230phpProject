@@ -99,6 +99,8 @@ When finished testing, return to the first terminal where the PHP server is runn
 | Project 1 | /project1_overview.md |
 | Project 1 | /submission_example/code/test_client.html |
 | Project 1 | /submission_example/README.md |
+| Project 1 | /submission_example/presentation/api_tutorial.md |
+| Project 1 | /submission_example/presentation/nginx_deployment.md |
 
 ### AI Assistance
 

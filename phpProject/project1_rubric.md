@@ -82,8 +82,8 @@
 - [5/5%] The marp slides are correctly transformed into pdf files.
   - List PDF file name: api_tutorial.pdf
 - [5/5%] Slides and PDFs uploaded to **GitHub**.
-  - Write your GitHub repository Marp file link: https://github.com/myleslocher-spec/phpProject/blob/main/presentation/api_tutorial.md
-  - Write your GitHub repository PDF link: https://github.com/myleslocher-spec/phpProject/blob/main/presentation/api_tutorial.pdf 
+  - Write your GitHub repository Marp file link: https://github.com/myleslocher-spec/ase230phpProject/blob/main/phpProject/presentation/api_tutorial.md
+  - Write your GitHub repository PDF link: https://github.com/myleslocher-spec/ase230phpProject/blob/main/phpProject/presentation/api_tutorial.pdf
 
 ---
 
