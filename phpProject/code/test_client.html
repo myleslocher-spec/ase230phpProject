@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events and Venues API Test</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .endpoint-card {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #007cba;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+
+        input {
+            padding: 5px;
+            margin: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Events and Venues API Test Page</h1>
+    <p>Use this page to test the REST API endpoints.</p>
+
+    <h2>Venues</h2>
+
+    <div class="endpoint-card">
+        <h3>1. Get All Venues</h3>
+        <button onclick="getAllVenues()">GET /venues</button>
+        <pre id="all-venues-result"></pre>
+    </div>
+
+    <div class="endpoint-card">
+        <h3>2. Get Venue by ID</h3>
+        <input type="number" id="get-venue-id" placeholder="Venue ID">
+        <button onclick="getVenue()">GET /venues/{id}</button>
+        <pre id="get-venue-result"></pre>
+    </div>
+
+    <div class="endpoint-card">
+        <h3>3. Create Venue</h3>
+        <input type="text" id="venue-name" placeholder="Venue Name">
+        <input type="text" id="venue-address" placeholder="Address">
+        <input type="number" id="venue-capacity" placeholder="Capacity">
+        <button onclick="createVenue()">POST /venues</button>
+        <pre id="create-venue-result"></pre>
+    </div>
+
+    <div class="endpoint-card">
+        <h3>4. Update Venue</h3>
+        <input type="number" id="update-venue-id" placeholder="Venue ID">
+        <input type="text" id="update-venue-name" placeholder="Venue Name">
+        <input type="text" id="update-venue-address" placeholder="Address">
+        <input type="number" id="update-venue-capacity" placeholder="Capacity">
+        <button onclick="updateVenue()">PUT /venues/{id}</button>
+        <pre id="update-venue-result"></pre>
+    </div>
+
+    <div class="endpoint-card">
+        <h3>5. Delete Venue</h3>
+        <input type="number" id="delete-venue-id" placeholder="Venue ID">
+        <input type="text" id="delete-venue-token" placeholder="Bearer Token">
+        <button onclick="deleteVenue()">DELETE /venues/{id}</button>
+        <pre id="delete-venue-result"></pre>
+    </div>
+
+    
+    <h2>Events</h2>
+
+    <div class="endpoint-card">
+        <h3>6. Get All Events</h3>
+        <button onclick="getAllEvents()">GET /events</button>
+        <pre id="all-events-result"></pre>
+    </div>
+
+    <div class="endpoint-card">
+        <h3>7. Get Event by ID</h3>
+        <input type="number" id="get-event-id" placeholder="Event ID">
+        <button onclick="getEvent()">GET /events/{id}</button>
+        <pre id="get-event-result"></pre>
+    </div>
+    
+    <div class="endpoint-card">
+        <h3>8. Create Event</h3>
+        <input type="text" id="event-name" placeholder="Event Name">
+        <input type="text" id="event-description" placeholder="Description">
+        <input type="text" id="event-date" placeholder="YYYY-MM-DD HH:MM:SS">
+        <input type="number" id="event-venue-id" placeholder="Venue ID">
+        <button onclick="createNewEvent()">POST /events</button>
+        <pre id="create-event-result"></pre>
+    </div>
+    
+    <div class="endpoint-card">
+        <h3>9. Update Event</h3>
+        <input type="number" id="update-event-id" placeholder="Event ID">
+        <input type="text" id="update-event-name" placeholder="Event Name">
+        <input type="text" id="update-event-description" placeholder="Description">
+        <input type="text" id="update-event-date" placeholder="YYYY-MM-DD HH:MM:SS">
+        <input type="number" id="update-event-venue-id" placeholder="Venue ID">
+        <button onclick="updateEvent()">PUT /events/{id}</button>
+        <pre id="update-event-result"></pre>
+    </div>
+
+    <div class="endpoint-card">
+        <h3>10. Delete Event</h3>
+        <input type="number" id="delete-event-id" placeholder="Event ID">
+        <input type="text" id="delete-event-token" placeholder="Bearer Token">
+        <button onclick="deleteEvent()">DELETE /events/{id}</button>
+        <pre id="delete-event-result"></pre>
+    </div>
+
+    <script>
+        const API_BASE = '';
+
+        async function getAllVenues() {
+            const resultEl = document.getElementById('all-venues-result');
+
+            try {
+                const response = await fetch(`${API_BASE}/venues`);
+                const data = await response.json();
+                const prefix = response.ok ? '' : `HTTP ${response.status}: `;
+                resultEl.textContent = prefix + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Request or response error: ' + error.message;
+            }
+        }
+        
+        async function getVenue() {
+            const id = document.getElementById('get-venue-id').value;
+            const resultEl = document.getElementById('get-venue-result');
+
+            if (!id) {
+                resultEl.textContent = 'Please enter a venue ID';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/venues/${id}`);
+                const data = await response.json();
+                const prefix = response.ok ? '' : `HTTP ${response.status}: `;
+                resultEl.textContent = prefix + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Request or response error: ' + error.message;
+            }
+        }
+        
+        async function createVenue() {
+            const resultEl = document.getElementById('create-venue-result');
+            const name = document.getElementById('venue-name').value;
+            const address = document.getElementById('venue-address').value;
+            const capacity = parseInt(document.getElementById('venue-capacity').value, 10);
+
+            if (!name || !address || !Number.isInteger(capacity) || capacity < 1) {
+                resultEl.textContent = 'Please enter valid venue information';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/venues`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        address: address,
+                        capacity: capacity
+                    })
+                });
+
+                const data = await response.json();
+                const prefix = response.ok ? '' : `HTTP ${response.status}: `;
+                resultEl.textContent = prefix + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Request or response error: ' + error.message;
+            }
+        }
+        
+        async function updateVenue() {
+            const resultEl = document.getElementById('update-venue-result');
+            const id = document.getElementById('update-venue-id').value;
+            const name = document.getElementById('update-venue-name').value;
+            const address = document.getElementById('update-venue-address').value;
+            const capacity = parseInt(document.getElementById('update-venue-capacity').value, 10);
+
+            if (!id || !name || !address || !Number.isInteger(capacity) || capacity < 1) {
+                resultEl.textContent = 'Please enter valid venue information';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/venues/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        address: address,
+                        capacity: capacity
+                    })
+                });
+
+                const data = await response.json();
+                const prefix = response.ok ? '' : `HTTP ${response.status}: `;
+                resultEl.textContent = prefix + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Request or response error: ' + error.message;
+            }
+        }
+        
+        async function deleteVenue() {
+            const resultEl = document.getElementById('delete-venue-result');
+            const id = document.getElementById('delete-venue-id').value;
+            const token = document.getElementById('delete-venue-token').value;
+
+            if (!id) {
+                resultEl.textContent = 'Please enter a venue ID';
+                return;
+            }
+
+            try {
+                const headers = {};
+
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
+                const response = await fetch(`${API_BASE}/venues/${id}`, {
+                    method: 'DELETE',
+                    headers: headers
+                });
+
+                const data = await response.json();
+                const prefix = response.ok ? '' : `HTTP ${response.status}: `;
+                resultEl.textContent = prefix + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Request or response error: ' + error.message;
+            }
+        }
+
+        async function getAllEvents() {
+            const resultEl = document.getElementById('all-events-result');
+
+            try {
+                const response = await fetch(`${API_BASE}/events`);
+                const data = await response.json();
+                const prefix = response.ok ? '' : `HTTP ${response.status}: `;
+                resultEl.textContent = prefix + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Request or response error: ' + error.message;
+            }
+        }
+
+        
+        async function getEvent() {
+            const id = document.getElementById('get-event-id').value;
+            const resultEl = document.getElementById('get-event-result');
+
+            if (!id) {
+                resultEl.textContent = 'Please enter an event ID';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/events/${id}`);
+                const data = await response.json();
+                const prefix = response.ok ? '' : `HTTP ${response.status}: `;
+                resultEl.textContent = prefix + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Request or response error: ' + error.message;
+            }
+        }
+        
+        async function createNewEvent() {
+            const resultEl = document.getElementById('create-event-result');
+            const name = document.getElementById('event-name').value;
+            const description = document.getElementById('event-description').value;
+            const event_date = document.getElementById('event-date').value;
+            const venue_id = parseInt(document.getElementById('event-venue-id').value, 10);
+
+            if (!name || !event_date || !Number.isInteger(venue_id) || venue_id < 1) {
+                resultEl.textContent = 'Please enter valid event information';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/events`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        description: description,
+                        event_date: event_date,
+                        venue_id: venue_id
+                    })
+                });
+
+                const data = await response.json();
+                const prefix = response.ok ? '' : `HTTP ${response.status}: `;
+                resultEl.textContent = prefix + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Request or response error: ' + error.message;
+            }
+        }
+        
+        async function updateEvent() {
+            const resultEl = document.getElementById('update-event-result');
+            const id = document.getElementById('update-event-id').value;
+            const name = document.getElementById('update-event-name').value;
+            const description = document.getElementById('update-event-description').value;
+            const event_date = document.getElementById('update-event-date').value;
+            const venue_id = parseInt(document.getElementById('update-event-venue-id').value, 10);
+
+            if (!id || !name || !event_date || !Number.isInteger(venue_id) || venue_id < 1) {
+                resultEl.textContent = 'Please enter valid event information';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/events/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        description: description,
+                        event_date: event_date,
+                        venue_id: venue_id
+                    })
+                });
+
+                const data = await response.json();
+                const prefix = response.ok ? '' : `HTTP ${response.status}: `;
+                resultEl.textContent = prefix + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Request or response error: ' + error.message;
+            }
+        }
+        
+        async function deleteEvent() {
+            const resultEl = document.getElementById('delete-event-result');
+            const id = document.getElementById('delete-event-id').value;
+            const token = document.getElementById('delete-event-token').value;
+
+            if (!id) {
+                resultEl.textContent = 'Please enter an event ID';
+                return;
+            }
+
+            try {
+                const headers = {};
+
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
+                const response = await fetch(`${API_BASE}/events/${id}`, {
+                    method: 'DELETE',
+                    headers: headers
+                });
+
+                const data = await response.json();
+                const prefix = response.ok ? '' : `HTTP ${response.status}: `;
+                resultEl.textContent = prefix + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultEl.textContent = 'Request or response error: ' + error.message;
+            }
+        }
+
+    </script>
+
+</body>
+</html>
